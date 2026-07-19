@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     if (parseFloat(cartTotal) < parseFloat(discount.min_purchase)) {
       return NextResponse.json({ 
-        error: `Minimum purchase of ₹${discount.min_purchase} required for this code` 
+        error: `Minimum purchase of $${discount.min_purchase} required for this code` 
       }, { status: 400 });
     }
 

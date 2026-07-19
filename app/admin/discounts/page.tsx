@@ -195,7 +195,7 @@ export default function AdminDiscountsPage() {
                   <label style={{ color: '#888', fontSize: '0.85rem' }}>Type</label>
                   <select className="form-input" value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })}>
                     <option value="percentage">Percentage (%)</option>
-                    <option value="fixed">Fixed Amount (₹)</option>
+                    <option value="fixed">Fixed Amount ($)</option>
                   </select>
                 </div>
                 <div>
@@ -206,7 +206,7 @@ export default function AdminDiscountsPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                 <div>
-                  <label style={{ color: '#888', fontSize: '0.85rem' }}>Min. Purchase (₹)</label>
+                  <label style={{ color: '#888', fontSize: '0.85rem' }}>Min. Purchase ($)</label>
                   <input type="number" className="form-input" placeholder="0" value={formData.min_purchase} onChange={e => setFormData({ ...formData, min_purchase: e.target.value })} />
                 </div>
                 <div>

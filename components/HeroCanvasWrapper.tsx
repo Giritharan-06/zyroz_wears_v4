@@ -16,13 +16,22 @@ export default function HeroCanvasWrapper() {
     <div style={{ width: '100%', height: '100%' }}>
       <CanvasModel 
         color="#111111" 
-        graphicUrl="/asessts/Zyroz_logo.jpeg" 
-        position={{ x: 50, y: 50 }} 
-        scale={1} 
-        rotation={0}
+        decals={[
+          {
+            id: 'logo',
+            url: '/asessts/Zyroz_logo.jpeg',
+            position: { x: 50, y: 50 },
+            scale: 1,
+            rotation: 0
+          }
+        ]}
         roughness={0.8}
         metalness={0.2}
-        environment="studio"
+        selectedDecalId={null}
+        onSelectDecal={() => {}}
+        onUpdateDecalPosition={() => {}}
+        isDraggingDecal={false}
+        setIsDraggingDecal={() => {}}
       />
     </div>
   );

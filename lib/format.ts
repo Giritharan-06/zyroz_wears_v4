@@ -3,6 +3,6 @@ export function formatPrice(price: number | string) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0, // INR usually doesn't show decimals for commerce like this
+    maximumFractionDigits: 0,
   }).format(numericPrice);
 }

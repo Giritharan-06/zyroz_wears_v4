@@ -6,27 +6,78 @@ import { useGLTF, useTexture, Decal } from '@react-three/drei';
 import * as THREE from 'three';
 import { easing } from 'maath';
 
-interface ShirtModelProps {
-  color: string;
-  graphicUrl: string | null;
+interface DecalItem {
+  id: string;
+  url: string;
   position: { x: number; y: number };
   scale: number;
   rotation: number;
-  roughness: number;
-  metalness: number;
 }
 
-export default function ShirtModel({ color, graphicUrl, position, scale, rotation, roughness, metalness }: ShirtModelProps) {
-  const { nodes, materials } = useGLTF('/shirt_baked.glb') as any;
-  const group = useRef<THREE.Group>(null);
-  const DecalComponent = Decal as any;
-  
-  // Load texture if url is provided
-  const decalTexture = useTexture(graphicUrl || '/next.svg'); // Fallback if no URL, though we only render Decal if graphicUrl exists
+interface ShirtModelProps {
+  color: string;
+  decals: DecalItem[];
+  roughness: number;
+  metalness: number;
+  selectedDecalId: string | null;
+  onSelectDecal: (id: string) => void;
+  onUpdateDecalPosition: (id: string, position: { x: number; y: number }) => void;
+  isDraggingDecal: boolean;
+  setIsDraggingDecal: (dragging: boolean) => void;
+  gender?: 'men' | 'women';
+}
+
+function IndividualDecal({ 
+  decal, 
+  onSelect, 
+  setIsDraggingDecal 
+}: { 
+  decal: DecalItem; 
+  onSelect: () => void;
+  setIsDraggingDecal: (dragging: boolean) => void;
+}) {
+  const decalTexture = useTexture(decal.url);
   if (decalTexture) {
     decalTexture.anisotropy = 16;
   }
+  const DecalComponent = Decal as any;
+  
+  return (
+    <DecalComponent 
+      position={[
+         (decal.position.x - 50) * 0.003, // mapping 0-100% to approximate 3D world space coordinates
+         -(decal.position.y - 50) * 0.008, 
+         0.15 // z position slightly forward
+      ]}
+      rotation={[0, 0, decal.rotation * Math.PI / 180]}
+      scale={[0.15 * decal.scale, 0.15 * decal.scale, 0.5]}
+      map={decalTexture}
+      depthTest={false}
+      depthWrite={true}
+      onPointerDown={(e: any) => {
+        e.stopPropagation();
+        onSelect();
+        setIsDraggingDecal(true);
+      }}
+    />
+  );
+}
 
+export default function ShirtModel({ 
+  color, 
+  decals, 
+  roughness, 
+  metalness, 
+  selectedDecalId, 
+  onSelectDecal,
+  onUpdateDecalPosition, 
+  isDraggingDecal,
+  setIsDraggingDecal,
+  gender = 'men'
+}: ShirtModelProps) {
+  const { nodes, materials } = useGLTF('/shirt_baked.glb') as any;
+  const group = useRef<THREE.Group>(null);
+  
   useFrame((state, delta) => {
     // Smoothly interpolate color
     if (materials.lambert1) {
@@ -34,30 +85,39 @@ export default function ShirtModel({ color, graphicUrl, position, scale, rotatio
     }
   });
 
+  const handlePointerMove = (e: any) => {
+    if (isDraggingDecal && selectedDecalId && e.uv) {
+      e.stopPropagation();
+      const newX = Math.round(e.uv.x * 100);
+      const newY = Math.round((1 - e.uv.y) * 100);
+      onUpdateDecalPosition(selectedDecalId, { x: newX, y: newY });
+    }
+  };
+
+  const modelScale: [number, number, number] = gender === 'women' ? [0.88, 0.92, 0.8] : [1, 1, 1];
+  const modelPosition: [number, number, number] = gender === 'women' ? [0, 0.05, 0] : [0, 0, 0];
+
   return (
     <group ref={group} dispose={null}>
       <mesh
         castShadow
+        scale={modelScale}
+        position={modelPosition}
         geometry={nodes.T_Shirt_male.geometry}
         material={materials.lambert1}
         material-roughness={roughness}
         material-metalness={metalness}
         dispose={null}
+        onPointerMove={handlePointerMove}
       >
-        {graphicUrl && decalTexture && (
-          <DecalComponent 
-            position={[
-               (position.x - 50) * 0.003, // mapping 0-100% to approximate 3D world space coordinates
-               -(position.y - 50) * 0.008, 
-               0.15 // z position slightly forward
-            ]}
-            rotation={[0, 0, rotation * Math.PI / 180]}
-            scale={0.15 * scale}
-            map={decalTexture}
-            depthTest={false}
-            depthWrite={true}
+        {decals.map((decal) => (
+          <IndividualDecal 
+            key={decal.id} 
+            decal={decal} 
+            onSelect={() => onSelectDecal(decal.id)}
+            setIsDraggingDecal={setIsDraggingDecal}
           />
-        )}
+        ))}
       </mesh>
     </group>
   );

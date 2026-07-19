@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { X, Plus, Trash2, Edit2, Loader2, RefreshCw } from 'lucide-react';
+import { X, Plus, Trash2, Edit2, Loader2, RefreshCw, Percent } from 'lucide-react';
 import { formatPrice } from '@/lib/format';
 
 export default function ProductsPage() {
@@ -15,7 +15,8 @@ export default function ProductsPage() {
     sub_category: '',
     price: '',
     stock: '',
-    image_url: ''
+    image_url: '',
+    offer: '0'
   });
 
   const fetchProducts = async () => {
@@ -59,14 +60,15 @@ export default function ProductsPage() {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
-          stock: parseInt(formData.stock)
+          stock: parseInt(formData.stock),
+          offer: parseInt(formData.offer || '0')
         })
       });
 
       if (res.ok) {
         setShowModal(false);
         setEditingProduct(null);
-        setFormData({ name: '', category: 'collection', sub_category: '', price: '', stock: '', image_url: '' });
+        setFormData({ name: '', category: 'collection', sub_category: '', price: '', stock: '', image_url: '', offer: '0' });
         fetchProducts();
       } else {
         alert('Operation failed');
@@ -85,14 +87,15 @@ export default function ProductsPage() {
       sub_category: product.sub_category,
       price: product.price.toString(),
       stock: product.stock.toString(),
-      image_url: product.image_url
+      image_url: product.image_url,
+      offer: product.offer ? product.offer.toString() : '0'
     });
     setShowModal(true);
   };
 
   const openAdd = () => {
     setEditingProduct(null);
-    setFormData({ name: '', category: 'collection', sub_category: '', price: '', stock: '', image_url: '' });
+    setFormData({ name: '', category: 'collection', sub_category: '', price: '', stock: '', image_url: '', offer: '0' });
     setShowModal(true);
   };
 
@@ -144,6 +147,7 @@ export default function ProductsPage() {
                 <th>Product</th>
                 <th>Category</th>
                 <th>Stock</th>
+                <th>Offer/Discount</th>
                 <th>Price</th>
                 <th>Actions</th>
               </tr>
@@ -164,6 +168,17 @@ export default function ProductsPage() {
                   </td>
                   <td>
                     <span style={{ color: p.stock < 10 ? '#ef4444' : '#fff' }}>{p.stock} units</span>
+                  </td>
+                  <td>
+                    <span style={{ 
+                      color: p.offer > 0 ? '#4ade80' : '#888', 
+                      fontWeight: p.offer > 0 ? '700' : '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      <Percent size={14} /> {p.offer > 0 ? `${p.offer}% OFF` : 'No Offer'}
+                    </span>
                   </td>
                   <td>
                     <span style={{ fontWeight: 600, color: '#4ade80' }}>{formatPrice(p.price)}</span>
@@ -209,14 +224,18 @@ export default function ProductsPage() {
                  </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
                 <div className="form-group">
                   <label>Price (INR)</label>
-                  <input required type="number" step="0.01" className="form-input" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} placeholder="45.00" />
+                  <input required type="number" step="1" className="form-input" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} placeholder="2499" />
                 </div>
                 <div className="form-group">
                   <label>Stock</label>
                   <input required type="number" className="form-input" value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} placeholder="100" />
+                </div>
+                <div className="form-group">
+                  <label>Offer Discount (%)</label>
+                  <input type="number" min="0" max="99" className="form-input" value={formData.offer} onChange={e => setFormData({...formData, offer: e.target.value})} placeholder="0" />
                 </div>
               </div>
 

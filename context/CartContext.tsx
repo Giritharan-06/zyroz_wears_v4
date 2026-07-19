@@ -16,6 +16,8 @@ export interface CartItem {
     decalUrl?: string | null;
     roughness?: number;
     metalness?: number;
+    decals?: any[];
+    gender?: string;
   };
 }
 

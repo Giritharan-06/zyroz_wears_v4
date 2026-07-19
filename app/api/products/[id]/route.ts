@@ -5,11 +5,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   try {
     const { id } = await params;
     const body = await req.json();
-    const { name, category, sub_category, image_url, price, stock } = body;
+    const { name, category, sub_category, image_url, price, stock, offer } = body;
     
     await query(
-      'UPDATE products SET name = $1, category = $2, sub_category = $3, image_url = $4, price = $5, stock = $6 WHERE id = $7',
-      [name, category, sub_category, image_url, price, stock, id]
+      'UPDATE products SET name = $1, category = $2, sub_category = $3, image_url = $4, price = $5, stock = $6, offer = $7 WHERE id = $8',
+      [name, category, sub_category, image_url, price, stock, parseInt(offer || '0'), id]
     );
     
     return NextResponse.json({ success: true });

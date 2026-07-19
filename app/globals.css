@@ -1,12 +1,12 @@
 :root {
-  --background: #050505;
-  --foreground: #ffffff;
-  --accent: #111111;
-  --accent-light: #222222;
-  --text-muted: #888888;
-  --brand: #3b82f6; /* Shift from neon green to a professional blue */
-  --glass-bg: rgba(20, 20, 25, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --background: #ffffff;
+  --foreground: #000000;
+  --accent: #f9fafb;
+  --accent-light: #f3f4f6;
+  --text-muted: #4b5563;
+  --brand: #e11d48; /* Red brand color matching Souled Store */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -93,10 +93,11 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: space-between;
   align-items: center;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   transition: all 0.3s ease;
 }
 
@@ -119,6 +120,7 @@ h1, h2, h3, h4, h5, h6 {
 .nav-link {
   position: relative;
   overflow: hidden;
+  color: #000000;
 }
 .nav-link::after {
   content: '';

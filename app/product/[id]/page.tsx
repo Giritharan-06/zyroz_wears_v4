@@ -26,8 +26,8 @@ export default async function ProductPage({ params }: { params: { id: string } }
          price: 189.99,
          description: "A timeless classic reimagined. Crafted with premium wool and genuine leather sleeves. Features intricate embroidery and a tailored fit.",
          category: "outerwear",
-         image_url: "/placeholder.png",
-         images: ["/placeholder.png", "/placeholder.png", "/placeholder.png"] // Mock multiple images
+         image_url: "/asessts/all_types.jpg",
+         images: ["/asessts/all_types.jpg", "/asessts/couple_view.jpg", "/asessts/group_tshirt.jpg"] // Mock multiple images
        };
     } else {
        notFound();
@@ -46,7 +46,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
   }
 
   return (
-    <main style={{ backgroundColor: '#0a0a0a', minHeight: '100vh', color: '#fff' }}>
+    <main style={{ backgroundColor: '#ffffff', minHeight: '100vh', color: '#000000' }}>
       <Navbar />
       
       <div className="container" style={{ paddingTop: '15vh', paddingBottom: '10vh' }}>

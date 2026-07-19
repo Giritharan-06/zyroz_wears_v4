@@ -34,7 +34,7 @@ async function run() {
     const values = [
       ['Men Collection', 'collection', 'men', '/Naruto_hoody/T-shirt_with_Naruto_202604141455-ezremove_000.webp', 45.00, 150],
       ['Couple Sets', 'collection', 'couple', '/asessts/couple_view.jpg', 80.00, 50],
-      ['Festival Edit', 'collection', 'festival', '/asessts/all_types.jpg', 50.00, 200],
+      ['Special Edition', 'collection', 'special', '/asessts/all_types.jpg', 50.00, 200],
       ['Group Orders', 'collection', 'group', '/asessts/group_tshirt.jpg', 40.00, 300],
       ['Luxury Gold Chain', 'chain', 'gold', '/asessts/chains2.jpg', 120.00, 12],
       ['Luxury Silver Chain', 'chain', 'silver', '/asessts/chains2.jpg', 110.00, 24]

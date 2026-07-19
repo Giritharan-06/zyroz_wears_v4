@@ -14,11 +14,11 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, category, sub_category, image_url, price, stock } = body;
+    const { name, category, sub_category, image_url, price, stock, offer } = body;
     
     await query(
-      'INSERT INTO products (name, category, sub_category, image_url, price, stock) VALUES ($1, $2, $3, $4, $5, $6)',
-      [name, category || 'collection', sub_category || 'general', image_url, price, stock]
+      'INSERT INTO products (name, category, sub_category, image_url, price, stock, offer) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [name, category || 'collection', sub_category || 'general', image_url, price, stock, parseInt(offer || '0')]
     );
     
     return NextResponse.json({ success: true });

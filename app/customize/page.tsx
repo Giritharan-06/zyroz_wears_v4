@@ -3,7 +3,7 @@ import AnimeCustomizer from '@/components/AnimeCustomizer';
 
 export default function CustomizePage() {
   return (
-    <main style={{ backgroundColor: '#050505', height: '100vh', width: '100vw', overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column' }}>
+    <main style={{ backgroundColor: '#ffffff', height: '100vh', width: '100vw', overflow: 'hidden', position: 'relative', display: 'flex', flexDirection: 'column' }}>
       <Navbar />
       
       {/* Studio Workspace container, taking remaining height below Navbar */}
